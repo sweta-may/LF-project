@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | CampusSecure</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">CampusSecure</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="report.html">Report</a></li>
+        <li><a href="profile.html">View Profile</a></li>
+        <li><a href="login.html" class="btn">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  <section class="login-section">
+    <div class="login-container">
+      <h2>Login to CampusSecure</h2>
+      <form id="loginForm">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit" class="btn-primary">Login</button>
+      </form>
+      <p id="loginMessage"></p>
+    </div>
+  </section>
+  <footer>
+    <p>© 2025 CampusSecure. All rights reserved.</p>
+  </footer>
+  <script src="js.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Simple client-side validation
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      if (username === "admin" && password === "admin123") {
+        document.getElementById('loginMessage').textContent = "Login successful!";
+        document.getElementById('loginMessage').style.color = "green";
+        // Redirect or further logic here
+      } else {
+        document.getElementById('loginMessage').textContent = "Invalid credentials.";
+        document.getElementById('loginMessage').style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>
