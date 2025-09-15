@@ -24,6 +24,9 @@
     <div class="dashboard">
       <h1>Welcome to <span>CampusSecure</span></h1>
       <p>Your AI-Powered Smart Surveillance & Lost & Found Assistant for a safer campus.</p>
+      {% if success_message %}
+        <p style="color:green;">{{ success_message }}</p>
+      {% endif %}
       {% if user_name %}
         <p style="color:green;">Logged in as: {{ user_name }}</p>
       {% endif %}
