@@ -17,21 +17,34 @@
       <form method="POST" action="/logout" style="margin-bottom:20px;">
         <button type="submit" class="btn-primary">Logout</button>
       </form>
-      <h3>Report History</h3>
-      {% if reports and reports|length > 0 %}
+      <h3>Lost Item Reports</h3>
+      {% if reports %}
         <ul>
-          {% for report in reports %}
+        {% for report in reports %}
             <li>
-              <strong>Item:</strong> {{ report.item_name }}<br>
-              <strong>Description:</strong> {{ report.description }}<br>
-              <strong>Location:</strong> {{ report.location_reported }}<br>
-              <strong>Status:</strong> {{ report.status }}<br>
-              <strong>Time Reported:</strong> {{ report.time_reported }}
+                <strong>Item:</strong> {{ report.item_name }} <br>
+                <strong>Description:</strong> {{ report.description }} <br>
+                <strong>Location:</strong> {{ report.lost_location }}
             </li>
-          {% endfor %}
+        {% endfor %}
         </ul>
       {% else %}
-        <p>No reports recorded.</p>
+        <p>No lost item reports found.</p>
+      {% endif %}
+
+      <h3>Detected Items</h3>
+      {% if detected_items %}
+        <ul>
+        {% for item in detected_items %}
+            <li>
+                <strong>Item Type:</strong> {{ item.item_type }} <br>
+                <strong>Location Detected:</strong> {{ item.location_detected }} <br>
+                <strong>Status:</strong> {{ item.status }}
+            </li>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <p>No detected items found.</p>
       {% endif %}
     </div>
   </section>
