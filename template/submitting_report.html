@@ -27,17 +27,16 @@
         <textarea id="description" name="description" required></textarea>
         <label for="location">Last Seen Location</label>
         <input type="text" id="location" name="location" required>
-        <label for="imageUpload">Upload Image</label>
-        <input type="file" id="imageUpload" name="imageUpload" accept="image/*" required>
+  <label for="imageUpload">Upload Image (optional)</label>
+  <input type="file" id="imageUpload" name="imageUpload" accept="image/*">
         <button type="submit" class="btn-primary">Submit Report</button>
       </form>
       <p id="reportMessage"></p>
     </div>
     <div>
       <form id="uploadForm" enctype="multipart/form-data">
-        <label for="image">Upload Image for Detection:</label>
-        <input type="file" id="image" name="image" accept="image/*" required>
-        <button type="submit">Detect Objects</button>
+  <!-- Removed duplicate file input for detection -->
+  <button type="submit">Detect Objects</button>
       </form>
     </div>
   <div id="result"></div>
