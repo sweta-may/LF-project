@@ -13,9 +13,9 @@
       <div class="logo">CampusSecure</div>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="submitting_report.html">Report</a></li>
-        <li><a href="profile.html">View Profile</a></li>
-        <li><a href="login.html" class="btn">Login</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="user.html" class="btn">LogIn</a></li>
+        <li><a href="signup.html" class="btn">Sign-Up</a></li>
       </ul>
     </nav>
   </header>
@@ -24,16 +24,14 @@
     <div class="dashboard">
       <h1>Welcome to <span>CampusSecure</span></h1>
       <p>Your AI-Powered Smart Surveillance & Lost & Found Assistant for a safer campus.</p>
+      {% if user_name %}
+        <p style="color:green;">Logged in as: {{ user_name }}</p>
+      {% endif %}
       <div class="dash-cards">
         <div class="card">
           <h3>🔍 Report Lost Item</h3>
           <p>Easily report lost items and help our AI track them.</p>
-          <a href="report.html" class="btn-primary">Go to Report</a>
-        </div>
-        <div class="card">
-          <h3>👤 View Profile</h3>
-          <p>Manage your account and track your reports.</p>
-          <a href="profile.html" class="btn-primary">Go to Profile</a>
+          <a href="submitting_report.html" class="btn-primary">REPORT</a>
         </div>
       </div>
     </div>
@@ -42,6 +40,5 @@
   <footer>
     <p>© 2025 CampusSecure. All rights reserved.</p>
   </footer>
-  <script src="js.js"></script>
 </body>
 </html>
