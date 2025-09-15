@@ -1,10 +1,12 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 import mysql.connector
 import os
 from flask_bcrypt import Bcrypt
 
-app = Flask(__name__)
 bcrypt = Bcrypt(app)
+
+# Secret key for session management
+app.secret_key = 'your_secret_key_here'  # Change this to a secure random value
 
 # MySQL configuration
 db_config = {
@@ -25,7 +27,33 @@ def get_db_connection():
 
 @app.route('/')
 def home():
-    return 'Backend is running!'    
+    user_name = session.get('user_name')
+    return render_template('index.html', user_name=user_name)
+#route to add user
+@app.route('/login', methods=['POST'])
+def login():
+    conn = get_db_connection()
+    if not conn:
+        return "Database connection failed", 500
+    try:
+        data = request.form
+        email = data['email']
+        password = data['password']
+
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if user and bcrypt.check_password_hash(user['password'], password):
+            session['user_name'] = user['name']
+            session['user_email'] = user['email']
+            return redirect(url_for('home'))
+        else:
+            return render_template('user.html', error='Invalid email or password')
+    except Exception as e:
+        return render_template('user.html', error=str(e))
 
 #route to add user
 @app.route('/add_user', methods=['POST'])
