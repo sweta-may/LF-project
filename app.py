@@ -308,15 +308,22 @@ def profile():
     user_name = session.get('user_name')
     user_email = session.get('user_email')
     reports = []
+    detected_items = []
     if user_email:
         conn = get_db_connection()
         if conn:
             cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM LostReports WHERE user_id = (SELECT user_id FROM users WHERE email = %s)", (user_email,))
-            reports = cursor.fetchall()
+            cursor.execute("SELECT user_id FROM users WHERE email = %s", (user_email,))
+            user_row = cursor.fetchone()
+            user_id = user_row['user_id'] if user_row else None
+            if user_id:
+                cursor.execute("SELECT * FROM LostReports WHERE user_id = %s", (user_id,))
+                reports = cursor.fetchall()
+                cursor.execute("SELECT * FROM DetectedItems WHERE user_id = %s", (user_id,))
+                detected_items = cursor.fetchall()
             cursor.close()
             conn.close()
-    return render_template('profile.html', user_name=user_name, user_email=user_email, reports=reports)
+    return render_template('profile.html', user_name=user_name, user_email=user_email, reports=reports, detected_items=detected_items)
 
 # Logout route
 @app.route('/logout', methods=['POST'])
