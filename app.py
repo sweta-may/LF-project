@@ -1,19 +1,4 @@
 # User profile route
-@app.route('/profile')
-def profile():
-    user_name = session.get('user_name')
-    user_email = session.get('user_email')
-    reports = []
-    if user_email:
-        conn = get_db_connection()
-        if conn:
-            cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM LostReports WHERE user_id = (SELECT user_id FROM users WHERE email = %s)", (user_email,))
-            reports = cursor.fetchall()
-            cursor.close()
-            conn.close()
-    return render_template('profile.html', user_name=user_name, user_email=user_email, reports=reports)
-
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 import mysql.connector
 import os
@@ -308,6 +293,21 @@ def match_items():
         if conn:
             cursor.close()
             conn.close()
-            
+
+@app.route('/profile')
+def profile():
+    user_name = session.get('user_name')
+    user_email = session.get('user_email')
+    reports = []
+    if user_email:
+        conn = get_db_connection()
+        if conn:
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM LostReports WHERE user_id = (SELECT user_id FROM users WHERE email = %s)", (user_email,))
+            reports = cursor.fetchall()
+            cursor.close()
+            conn.close()
+    return render_template('profile.html', user_name=user_name, user_email=user_email, reports=reports)
+
 if __name__ == '__main__':
     app.run(debug=True)
