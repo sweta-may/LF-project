@@ -32,7 +32,8 @@ def get_db_connection():
 @app.route('/')
 def home():
     user_name = session.get('user_name')
-    return render_template('index.html', user_name=user_name)
+    success_message = session.pop('success_message', None)
+    return render_template('index.html', user_name=user_name, success_message=success_message)
 #route to add user
 @app.route('/login', methods=['POST'])
 def login():
@@ -53,6 +54,7 @@ def login():
         if user and bcrypt.check_password_hash(user['password'], password):
             session['user_name'] = user['name']
             session['user_email'] = user['email']
+            session['success_message'] = 'Login successful!'
             return redirect(url_for('home'))
         else:
             return render_template('user.html', error='Invalid email or password')
@@ -69,7 +71,7 @@ def add_user():
 
     try:
         data = request.form
-        user_id = data['user_id']
+        user_id = data.get('user_id')
         name = data['name']
         email = data['email']
         password = data['password']
@@ -77,13 +79,20 @@ def add_user():
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
         cursor = conn.cursor()
-        sql = "INSERT INTO users (user_id, name, email, password) VALUES (%s, %s, %s, %s)"
-        cursor.execute(sql, (user_id, name, email, hashed_password))
+        if user_id:
+            sql = "INSERT INTO users (user_id, name, email, password) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (user_id, name, email, hashed_password))
+        else:
+            sql = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
+            cursor.execute(sql, (name, email, hashed_password))
         conn.commit()
         cursor.close()
         conn.close()
 
-        return redirect(url_for('success_page'))
+        session['user_name'] = name
+        session['user_email'] = email
+        session['success_message'] = 'User added successfully!'
+        return redirect(url_for('home'))
 
     except mysql.connector.Error as err:
         if conn:
