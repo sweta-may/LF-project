@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up | CampusSecure</title>
+</head>
+<body>
+  <!-- No navbar/header on signup page -->
+  <section class="signup-section">
+    <div class="signup-container">
+      <h2>Create a New Account</h2>
+      <form id="signupForm" method="POST" action="/add_user">
+  <!-- Removed User ID field -->
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit" class="btn-primary">Sign Up</button>
+      </form>
+      <p id="signupMessage"></p>
+    </div>
+  </section>
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      // Let the form submit normally, then redirect on success
+      e.preventDefault();
+      var form = e.target;
+      var formData = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.redirected) {
+          window.location.href = response.url;
+        } else if (response.ok) {
+          window.location.href = 'index.html'; // fallback
+        } else {
+          document.getElementById('signupMessage').textContent = 'Signup failed.';
+        }
+      })
+      .catch(() => {
+        document.getElementById('signupMessage').textContent = 'Signup failed.';
+      });
+    });
+  </script>
+</body>
+</html>
