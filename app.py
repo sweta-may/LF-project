@@ -1,10 +1,14 @@
+
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 import mysql.connector
 import os
 from flask_bcrypt import Bcrypt
 
+app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
+app = Flask(__name__)
+bcrypt = Bcrypt(app)
 # Secret key for session management
 app.secret_key = 'your_secret_key_here'  # Change this to a secure random value
 
