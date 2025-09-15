@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile | CampusSecure</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>
+  <section class="profile-section">
+    <div class="profile-container">
+      <h2>User Profile</h2>
+      <div class="user-info">
+        <p><strong>Name:</strong> {{ user_name }}</p>
+        <p><strong>Email:</strong> {{ user_email }}</p>
+      </div>
+      <h3>Report History</h3>
+      {% if reports and reports|length > 0 %}
+        <ul>
+          {% for report in reports %}
+            <li>
+              <strong>Item:</strong> {{ report.item_name }}<br>
+              <strong>Description:</strong> {{ report.description }}<br>
+              <strong>Location:</strong> {{ report.location_reported }}<br>
+              <strong>Status:</strong> {{ report.status }}<br>
+              <strong>Time Reported:</strong> {{ report.time_reported }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No reports recorded.</p>
+      {% endif %}
+    </div>
+  </section>
+  <footer>
+    <p>© 2025 CampusSecure. All rights reserved.</p>
+  </footer>
+</body>
+</html>
