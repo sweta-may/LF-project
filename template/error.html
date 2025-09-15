@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+        .error-box { border: 2px solid #f44336; padding: 20px; border-radius: 8px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="error-box">
+        <h1>❌ Error!</h1>
+        <p>An error occurred. Please try again.</p>
+        <p>Details: {{ error_message }}</p>
+        <p><a href="/">Go back to the homepage</a></p>
+    </div>
+</body>
+</html>
