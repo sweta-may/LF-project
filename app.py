@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 import mysql.connector
 import os
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 # MySQL configuration
 db_config = {
@@ -38,25 +40,24 @@ def add_user():
         user_id = data['user_id']
         name = data['name']
         email = data['email']
-        password = data['password'] # ⚠ Remember to hash this!
+        password = data['password']
+
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
         cursor = conn.cursor()
         sql = "INSERT INTO users (user_id, name, email, password) VALUES (%s, %s, %s, %s)"
-        cursor.execute(sql, (user_id, name, email, password))
+        cursor.execute(sql, (user_id, name, email, hashed_password))
         conn.commit()
         cursor.close()
         conn.close()
 
-        # Redirect the user to a success page URL
         return redirect(url_for('success_page'))
 
     except mysql.connector.Error as err:
-        conn.rollback()
-        # In case of a database error, you can redirect to a specific error page
+        if conn:
+            conn.rollback()
         return redirect(url_for('error_page', message=str(err)))
-    
     except Exception as e:
-        # For other errors (e.g., missing form data)
         return redirect(url_for('error_page', message=str(e)))
 
 #success page loading
@@ -165,16 +166,22 @@ def add_detected():
         sql = "INSERT INTO DetectedItems (item_type, location_detected, status) VALUES (%s, %s, %s)"
         cursor.execute(sql, (item_type, location_detected, status))
         conn.commit()
-        
-        return redirect(url_for('success_page'))
-    
+
+        # Get the auto-generated detected_id and time_detected
+        detected_id = cursor.lastrowid
+        cursor.execute("SELECT time_detected FROM DetectedItems WHERE detected_id = %s", (detected_id,))
+        time_detected = cursor.fetchone()[0]
+        cursor.close()
+
+        # Redirect to the success page, passing detected_id and time_detected
+        return redirect(url_for('success_page', detected_id=detected_id, time_detected=time_detected))
+
     except mysql.connector.Error as err:
-        conn.rollback()
+        if conn:
+            conn.rollback()
         return redirect(url_for('error_page', message=str(err)))
-        
     except Exception as e:
         return redirect(url_for('error_page', message=str(e)))
-        
     finally:
         if conn:
             conn.close()
@@ -198,6 +205,61 @@ def get_detected_items():
     
     finally:
         if conn:
+            conn.close()
+
+# --- Matching System Route ---
+@app.route('/match_items')
+def match_items():
+    conn = get_db_connection()
+    if not conn:
+        return "Database connection failed", 500
+
+    try:
+        cursor = conn.cursor(dictionary=True)
+
+        # Step 1: Fetch all lost reports and detected items
+        cursor.execute("SELECT * FROM LostReports WHERE status = 'Pending'")
+        lost_reports = cursor.fetchall()
+
+        cursor.execute("SELECT * FROM DetectedItems WHERE status = 'Unclaimed'")
+        detected_items = cursor.fetchall()
+
+        new_matches_count = 0
+        matches_to_insert = []
+
+        # Step 2: Implement the matching logic
+        if lost_reports and detected_items:
+            for report in lost_reports:
+                for item in detected_items:
+                    confidence = 0.0
+
+                    # Basic matching logic based on item names
+                    if report['item_name'].lower() == item['item_type'].lower():
+                        confidence += 0.5
+                    
+                    # TODO: Add more sophisticated matching (e.g., location, time, etc.)
+                    # Example: if report['location_reported'] == item['location_detected']:
+                    #              confidence += 0.3
+                    
+                    if confidence >= 0.5: # Example threshold
+                        matches_to_insert.append((report['report_id'], item['item_id'], confidence))
+
+        # Step 3: Insert new matches into the Matches table
+        if matches_to_insert:
+            sql = "INSERT INTO Matches (report_id, item_id, confidence_score) VALUES (%s, %s, %s)"
+            cursor.executemany(sql, matches_to_insert)
+            conn.commit()
+            new_matches_count = cursor.rowcount
+
+        return f"Matching logic executed. Found and inserted {new_matches_count} new matches."
+
+    except mysql.connector.Error as err:
+        conn.rollback()
+        return redirect(url_for('error_page', message=str(err)))
+
+    finally:
+        if conn:
+            cursor.close()
             conn.close()
             
 if __name__ == '__main__':
