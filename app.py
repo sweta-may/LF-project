@@ -1,4 +1,4 @@
-# User profile route
+
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 import mysql.connector
 import os
@@ -293,7 +293,7 @@ def match_items():
         if conn:
             cursor.close()
             conn.close()
-
+# User profile route
 @app.route('/profile')
 def profile():
     user_name = session.get('user_name')
@@ -308,6 +308,12 @@ def profile():
             cursor.close()
             conn.close()
     return render_template('profile.html', user_name=user_name, user_email=user_email, reports=reports)
+
+# Logout route
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)
