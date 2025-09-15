@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lost Item Reports</title>
+</head>
+<body>
+    <h1>Lost Item Reports</h1>
+    {% if reports %}
+        <ul>
+        {% for report in reports %}
+            <li>
+                <strong>Item:</strong> {{ report.item_name }} <br>
+                <strong>Description:</strong> {{ report.description }} <br>
+                <strong>Location:</strong> {{ report.lost_location }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No lost item reports found.</p>
+    {% endif %}
+    <p><a href="/">Go back to the homepage</a></p>
+</body>
+</html>
