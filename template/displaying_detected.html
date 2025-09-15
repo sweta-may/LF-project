@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detected Items</title>
+</head>
+<body>
+    <h1>Detected Items</h1>
+    {% if detected_items %}
+        <ul>
+        {% for item in detected_items %}
+            <li>
+                <strong>Item Type:</strong> {{ item.item_type }} <br>
+                <strong>Location Detected:</strong> {{ item.location_detected }} <br>
+                <strong>Status:</strong> {{ item.status }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No detected items found.</p>
+    {% endif %}
+    <p><a href="/">Go back to the homepage</a></p>
+</body>
+</html>
