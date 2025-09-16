@@ -1,11 +1,9 @@
 
+# --- Imports and App Initialization ---
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 import mysql.connector
 import os
 from flask_bcrypt import Bcrypt
-
-app = Flask(__name__)
-bcrypt = Bcrypt(app)
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -34,7 +32,10 @@ def home():
     user_name = session.get('user_name')
     success_message = session.pop('success_message', None)
     return render_template('index.html', user_name=user_name, success_message=success_message)
-#route to add user
+@app.route('/login', methods=['GET'])
+def login_page():
+    return render_template('user.html')
+
 @app.route('/login', methods=['POST'])
 def login():
     conn = get_db_connection()
@@ -61,7 +62,10 @@ def login():
     except Exception as e:
         return render_template('user.html', error=str(e))
 
-#route to add user
+@app.route('/signup', methods=['GET'])
+def signup_page():
+    return render_template('signup.html')
+
 @app.route('/add_user', methods=['POST'])
 def add_user():
     conn = get_db_connection()
@@ -330,6 +334,15 @@ def profile():
 def logout():
     session.clear()
     return redirect(url_for('home'))
+# Route to display the login page
+@app.route('/login')
+def login_page():
+    return render_template('login.html')
+
+# Route to display the sign-up page
+@app.route('/signup')
+def signup_page():
+    return render_template('signup.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
