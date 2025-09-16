@@ -1,0 +1,33 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  margin-top: 50px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.error-box {
+  border: 2px solid var(--primary-color);
+  padding: 20px;
+  border-radius: 8px;
+  display: inline-block;
+  background-color: #34495e; /* A slightly lighter shade of the background for the box */
+}
+
+h1 {
+  color: var(--secondary-color);
+}
+
+p {
+  color: var(--text-color);
+}
+
+a {
+  color: var(--accent-light-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--accent-medium-color);
+}
