@@ -55,3 +55,20 @@ body {
 .user-info strong {
   color: var(--background-color);
 }
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  border: 2px solid var(--primary-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
+  cursor: pointer; /* Indicate it's clickable */
+  display: inline-block; /* Allows margin-bottom */
+}
+
+.btn-primary:hover {
+  background-color: #a45347; /* A slightly darker shade for hover effect */
+  transform: scale(1.05);
+}
