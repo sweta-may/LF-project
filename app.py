@@ -32,9 +32,6 @@ def home():
     user_name = session.get('user_name')
     success_message = session.pop('success_message', None)
     return render_template('index.html', user_name=user_name, success_message=success_message)
-@app.route('/login', methods=['GET'])
-def login_page():
-    return render_template('user.html')
 
 @app.route('/login', methods=['POST'])
 def login():
