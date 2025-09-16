@@ -1,0 +1,91 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Secure | Home</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>-->
+  <!-- Navbar -->
+  <!--<header>
+    <nav class="navbar">
+      <div class="logo">CampusSecure</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="user.html" class="btn">LogIn</a></li>
+        <li><a href="signup.html" class="btn">Sign-Up</a></li>
+      </ul>
+    </nav>
+  </header>-->
+  <!-- Dashboard -->
+  <!--<section class="home">
+    <div class="dashboard">
+      <h1>Welcome to <span>CampusSecure</span></h1>
+      <p>Your AI-Powered Smart Surveillance & Lost & Found Assistant for a safer campus.</p>
+      {% if success_message %}
+        <p style="color:green;">{{ success_message }}</p>
+      {% endif %}
+      {% if user_name %}
+        <p style="color:green;">Logged in as: {{ user_name }}</p>
+      {% endif %}
+      <div class="dash-cards">
+        <div class="card">
+          <h3>🔍 Report Lost Item</h3>
+          <p>Easily report lost items and help our AI track them.</p>
+          <a href="submitting_report.html" class="btn-primary">REPORT</a>
+        </div>
+      </div>
+    </div>
+  </section>-->
+  <!-- Footer -->
+  <!--<footer>
+    <p>© 2025 CampusSecure. All rights reserved.</p>
+  </footer>
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Secure | Home</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <header>
+    <nav class="navbar">
+      <div class="logo">CampusSecure</div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('profile') }}">Profile</a></li>
+        <li><a href="{{ url_for('login') }}" class="btn">LogIn</a></li>
+        <li><a href="{{ url_for('signup_page') }}" class="btn">Sign-Up</a></li>
+      </ul>
+    </nav>
+  </header>
+    <section class="home">
+    <div class="dashboard">
+      <h1>Welcome to <span>CampusSecure</span></h1>
+      <p>Your AI-Powered Smart Surveillance & Lost & Found Assistant for a safer campus.</p>
+      {% if success_message %}
+        <p style="color:green;">{{ success_message }}</p>
+      {% endif %}
+      {% if user_name %}
+        <p style="color:green;">Logged in as: {{ user_name }}</p>
+      {% endif %}
+      <div class="dash-cards">
+        <div class="card">
+          <h3>🔍 Report Lost Item</h3>
+          <p>Easily report lost items and help our AI track them.</p>
+          <a href="{{ url_for('report_lost') }}" class="btn-primary">REPORT</a>
+        </div>
+      </div>
+    </div>
+  </section>
+    <footer>
+    <p>© 2025 CampusSecure. All rights reserved.</p>
+  </footer>
+</body>
+</html>
