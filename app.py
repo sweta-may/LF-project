@@ -66,6 +66,21 @@ def detect_objects():
 
     return jsonify({"detections": detections})
 
+@app.route('/report_item', methods=['POST'])
+def report_item():
+    item_name = request.form['itemName']
+    description = request.form['description']
+    location = request.form['location']
+    image = request.files.get('imageUpload')  # optional
+
+    cur = mysql.connection.cursor()
+    cur.execute(
+        "INSERT INTO LostReports (user_id, item_name, description, location_reported) VALUES (%s, %s, %s, %s)",
+        (1, item_name, description, location)  # user_id hardcoded = 1 for now
+    )
+    mysql.connection.commit()
+    cur.close()
+    return "Report submitted successfully!"
 
 @app.route('/')
 def home():
