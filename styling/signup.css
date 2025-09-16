@@ -20,3 +20,59 @@ body {
   min-height: 100vh; /* Full viewport height */
 }
 
+.signup-section {
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px; /* Limits the width of the signup container */
+}
+
+.signup-container {
+  background-color: var(--accent-medium-color);
+  color: var(--background-color);
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.signup-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--background-color);
+}
+
+.signup-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signup-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--background-color);
+  width: 100%;
+  text-align: left;
+}
+
+.signup-container input[type="text"],
+.signup-container input[type="email"],
+.signup-container input[type="password"] {
+  width: calc(100% - 2rem); /* Adjust width to account for padding */
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--accent-light-color);
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #f7f7f7; /* A light background for inputs */
+  color: var(--background-color); /* Text color inside input */
+}
+
+.signup-container input[type="text"]:focus,
+.signup-container input[type="email"]:focus,
+.signup-container input[type="password"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(193, 102, 89, 0.5); /* Subtle glow */
+}
