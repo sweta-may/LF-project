@@ -25,6 +25,16 @@ db_config = {
     'database': 'lostfound_db'
 }
 
+# --- Database Connection Function ---
+def get_db_connection():
+    """Establishes and returns a new MySQL database connection."""
+    try:
+        conn = mysql.connector.connect(**db_config)
+        return conn
+    except mysql.connector.Error as err:
+        print(f"Error connecting to MySQL: {err}")
+        return None
+    
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -68,18 +78,29 @@ def detect_objects():
 
 @app.route('/report_item', methods=['POST'])
 def report_item():
+    conn = get_db_connection()
+    if not conn:
+        return "Database connection failed", 500
+
     item_name = request.form['itemName']
     description = request.form['description']
     location = request.form['location']
     image = request.files.get('imageUpload')  # optional
 
-    cur = mysql.connection.cursor()
-    cur.execute(
-        "INSERT INTO LostReports (user_id, item_name, description, location_reported) VALUES (%s, %s, %s, %s)",
-        (1, item_name, description, location)  # user_id hardcoded = 1 for now
-    )
-    mysql.connection.commit()
-    cur.close()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO LostReports (user_id, item_name, description, location_reported) VALUES (%s, %s, %s, %s)",
+            (1, item_name, description, location)  # user_id hardcoded = 1 for now
+        )
+        conn.commit()
+    except mysql.connector.Error as err:
+        return redirect(url_for('error_page', message=str(err)))
+    finally:
+        if conn:
+            cur.close()
+            conn.close()
+
     return "Report submitted successfully!"
 
 @app.route('/')
