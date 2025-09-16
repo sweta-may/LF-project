@@ -4,9 +4,16 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for, s
 import mysql.connector
 import os
 from flask_bcrypt import Bcrypt
+from ultralytics import YOLO
+import cv2
+
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+
+# Load YOLOv8 model (you can use yolov8n.pt for small model, faster)
+model = YOLO("yolov8n.pt")  
+
 # Secret key for session management
 app.secret_key = 'your_secret_key_here'  # Change this to a secure random value
 
@@ -18,6 +25,31 @@ db_config = {
     'database': 'lostfound_db'
 }
 
+
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+@app.route("/detect", methods=["POST"])
+def detect_objects():
+    if "file" not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
+    
+    file = request.files["file"]
+    filepath = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(filepath)
+
+    results = model.predict(filepath)
+
+    # Convert results to JSON-friendly format
+    detections = []
+    for box in results[0].boxes:
+        detections.append({
+            "class": int(box.cls[0]),
+            "confidence": float(box.conf[0]),
+            "coordinates": box.xyxy[0].tolist()
+        })
+
+    return jsonify({"detections": detections})
 def get_db_connection():
     """Establishes and returns a database connection."""
     try:
@@ -331,10 +363,6 @@ def profile():
 def logout():
     session.clear()
     return redirect(url_for('home'))
-# Route to display the login page
-@app.route('/login')
-def login_page():
-    return render_template('login.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
