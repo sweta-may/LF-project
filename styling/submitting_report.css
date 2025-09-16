@@ -87,3 +87,78 @@ footer {
   border-top: 2px solid var(--primary-color);
   margin-top: 2rem; /* Added some space before footer */
 }
+.profile-section {
+  padding: 3rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align items to the top */
+}
+
+.profile-container {
+  background-color: var(--accent-medium-color);
+  color: var(--background-color);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 800px;
+}
+
+.profile-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--background-color);
+  font-size: 2.2rem;
+}
+.user-info {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: var(--card-background); /* Using a distinct background for user info */
+  border-radius: 8px;
+}
+
+.user-info p {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.user-info strong {
+  color: var(--background-color);
+}
+
+.profile-container h3 {
+  font-size: 1.7rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--accent-light-color);
+  padding-bottom: 0.5rem;
+}
+
+.profile-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.profile-container li {
+  background-color: var(--card-background);
+  color: var(--background-color);
+  margin-bottom: 1rem;
+  padding: 1.2rem;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.profile-container li:hover {
+  transform: translateY(-5px);
+}
+
+.profile-container li strong {
+  color: var(--background-color);
+}
+
+.profile-container p:not(:last-child) { /* Styles for 'No reports found' messages */
+  text-align: center;
+  font-style: italic;
+  color: var(--text-color);
+}
