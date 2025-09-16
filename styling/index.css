@@ -144,3 +144,12 @@ body {
   font-size: 1rem;
   margin-bottom: 1.5rem;
 }
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--background-color);
+  border-top: 2px solid var(--primary-color);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
