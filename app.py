@@ -38,26 +38,34 @@ def detect_objects():
     filepath = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(filepath)
 
-    results = model.predict(filepath)
-
-    # Convert results to JSON-friendly format
     detections = []
-    for box in results[0].boxes:
-        detections.append({
-            "class": int(box.cls[0]),
-            "confidence": float(box.conf[0]),
-            "coordinates": box.xyxy[0].tolist()
-        })
+
+    # Check if it's a video or an image
+    if filepath.lower().endswith((".mp4", ".avi", ".mov", ".mkv")):
+        # Process video frame by frame
+        results = model.predict(filepath, stream=True)
+        frame_idx = 0
+        for frame in results:
+            for box in frame.boxes:
+                detections.append({
+                    "frame": frame_idx,
+                    "class": int(box.cls[0]),
+                    "confidence": float(box.conf[0]),
+                    "coordinates": box.xyxy[0].tolist()
+                })
+            frame_idx += 1
+    else:
+        # Process single image
+        results = model.predict(filepath)
+        for box in results[0].boxes:
+            detections.append({
+                "class": int(box.cls[0]),
+                "confidence": float(box.conf[0]),
+                "coordinates": box.xyxy[0].tolist()
+            })
 
     return jsonify({"detections": detections})
-def get_db_connection():
-    """Establishes and returns a database connection."""
-    try:
-        conn = mysql.connector.connect(**db_config)
-        return conn
-    except mysql.connector.Error as err:
-        print(f"Database connection error: {err}")
-        return None
+
 
 @app.route('/')
 def home():
