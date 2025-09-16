@@ -162,3 +162,8 @@ footer {
   font-style: italic;
   color: var(--text-color);
 }
+.profile-container form .btn-primary {
+  width: 100%; /* Make button full width */
+  padding: 1rem;
+  font-size: 1.1rem;
+}
