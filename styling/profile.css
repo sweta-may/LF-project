@@ -72,3 +72,37 @@ body {
   background-color: #a45347; /* A slightly darker shade for hover effect */
   transform: scale(1.05);
 }
+.profile-container h3 {
+  font-size: 1.8rem;
+  color: var(--background-color);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.profile-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.profile-container li {
+  background-color: var(--accent-light-color);
+  color: var(--card-text-color);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border-left: 5px solid var(--secondary-color);
+  transition: transform 0.3s ease-in-out;
+}
+
+.profile-container li:hover {
+  transform: translateX(10px); /* Slight slide effect on hover */
+}
+
+.profile-container li strong {
+  color: var(--background-color);
+}
+
+.profile-container p {
+  font-size: 1rem;
+  color: var(--card-text-color);
+}
